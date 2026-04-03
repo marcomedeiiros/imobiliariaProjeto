@@ -54,11 +54,10 @@ export const getCurrentPasswordHash = () => {
 // Setup the initial admin password on the server
 export const setupAdmin = async (password) => {
   try {
-    const passwordHash = await hashPassword(password);
     const response = await fetch('/api/setup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ passwordHash })
+      body: JSON.stringify({ password })
     });
     return await response.json();
   } catch (error) {
@@ -69,14 +68,12 @@ export const setupAdmin = async (password) => {
 // Change password on the server
 export const changeAdminPassword = async (currentPassword, newPassword) => {
   try {
-    const currentPasswordHash = await hashPassword(currentPassword);
-    const newPasswordHash = await hashPassword(newPassword);
     const token = sessionStorage.getItem('admin_token');
 
     const response = await fetch('/api/change-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentPasswordHash, newPasswordHash, token })
+      body: JSON.stringify({ currentPassword, newPassword, token })
     });
     return await response.json();
   } catch (error) {
@@ -97,14 +94,12 @@ export const secureLogin = async (password, storedHash, identifier) => {
   }
   
   try {
-    // Generate fresh hash to send to server
-    const passwordHash = await hashPassword(password);
     const deviceFingerprint = generateDeviceFingerprint();
 
     const response = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ passwordHash, identifier, deviceFingerprint })
+      body: JSON.stringify({ password, identifier, deviceFingerprint })
     });
 
     const result = await response.json();

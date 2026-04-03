@@ -4,6 +4,8 @@ import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import * as jose from 'jose';
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 const app = express();
 const port = 3001;
@@ -11,6 +13,26 @@ const port = 3001;
 app.use(cors());
 app.use(express.json({ limit: '60mb' }));
 app.use(express.urlencoded({ limit: '60mb', extended: true }));
+
+// Rota principal para evitar o "Cannot GET /"
+app.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <body style="font-family: Arial, sans-serif; padding: 2rem; text-align: center;">
+        <h2>Backend API Rodando com Sucesso!</h2>
+        <p>A porta <b>3001</b> é exclusiva para a API (comunicação de dados do sistema).</p>
+        <div style="background: #f4f4f4; padding: 1rem; border-radius: 8px; display: inline-block; text-align: left; margin-top: 1rem;">
+          <p>Para ver a <b>interface visual do site</b> (Frontend):</p>
+          <ol>
+            <li>Abra <b>outro terminal</b> na mesma pasta do projeto</li>
+            <li>Execute o comando: <code>npm run dev</code></li>
+            <li>Acesse o link gerado pelo Vite (geralmente <a href="http://localhost:5173" target="_blank">http://localhost:5173</a>)</li>
+          </ol>
+        </div>
+      </body>
+    </html>
+  `);
+});
 
 // Database initialization
 let db;
@@ -45,7 +67,11 @@ let db;
 })();
 
 // JWT Configuration
-const JWT_SECRET = 'your-secret-key-should-be-more-secure-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is missing in .env");
+  process.exit(1);
+}
 const secretKey = crypto.createHash('sha256').update(JWT_SECRET).digest();
 
 // Helper to check if setup is done
@@ -65,13 +91,15 @@ app.get('/api/status', async (req, res) => {
 });
 
 app.post('/api/setup', async (req, res) => {
-  const { passwordHash } = req.body;
-  if (!passwordHash) return res.status(400).json({ error: 'Missing password hash' });
+  const { password } = req.body;
+  if (!password) return res.status(400).json({ error: 'Missing password' });
 
   try {
     if (await isSetup()) return res.status(400).json({ error: 'Setup already completed' });
     
-    await db.run('INSERT INTO settings (key, value) VALUES (?, ?)', 'admin_password_hash', passwordHash);
+    // Hash password with bcrypt before storing
+    const hash = await bcrypt.hash(password, 12);
+    await db.run('INSERT INTO settings (key, value) VALUES (?, ?)', 'admin_password_hash', hash);
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: 'Failed to save settings' });
@@ -79,7 +107,7 @@ app.post('/api/setup', async (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
-  const { passwordHash, identifier, deviceFingerprint } = req.body;
+  const { password, identifier, deviceFingerprint } = req.body;
   const ip = req.ip;
   const now = Date.now();
   
@@ -94,7 +122,10 @@ app.post('/api/login', async (req, res) => {
     const stored = await db.get('SELECT value FROM settings WHERE key = ?', 'admin_password_hash');
     if (!stored) return res.status(400).json({ error: 'Setup not completed' });
 
-    if (passwordHash === stored.value) {
+    // Validate using bcrypt
+    const isValid = await bcrypt.compare(password, stored.value);
+    
+    if (isValid) {
       // Generate JWT
       const jwt = await new jose.SignJWT({ role: 'admin', identifier, deviceFingerprint })
         .setProtectedHeader({ alg: 'HS256' })
@@ -145,7 +176,7 @@ app.post('/api/verify', async (req, res) => {
 });
 
 app.post('/api/change-password', async (req, res) => {
-  const { currentPasswordHash, newPasswordHash, token } = req.body;
+  const { currentPassword, newPassword, token } = req.body;
 
   try {
     // Basic JWT verification (simplified for this task)
@@ -154,11 +185,16 @@ app.post('/api/change-password', async (req, res) => {
     });
 
     const stored = await db.get('SELECT value FROM settings WHERE key = ?', 'admin_password_hash');
-    if (currentPasswordHash !== stored.value) {
+    
+    // Verify current password with bcrypt
+    const isCurrentValid = await bcrypt.compare(currentPassword, stored.value);
+    if (!isCurrentValid) {
       return res.status(401).json({ error: 'Senha atual incorreta' });
     }
 
-    await db.run('UPDATE settings SET value = ? WHERE key = ?', newPasswordHash, 'admin_password_hash');
+    // Hash the new password and update
+    const newHash = await bcrypt.hash(newPassword, 12);
+    await db.run('UPDATE settings SET value = ? WHERE key = ?', newHash, 'admin_password_hash');
     res.json({ success: true });
   } catch (error) {
     res.status(401).json({ error: 'Unauthorized or invalid token' });

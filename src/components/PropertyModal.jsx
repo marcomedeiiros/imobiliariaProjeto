@@ -89,12 +89,12 @@ ${property.price}`
               boxShadow: '0 8px 30px rgba(0,0,0,0.3)'
             }}>
               {activeImage && activeImage.startsWith('data:video/') ? (
-                <video src={activeImage} style={{ width: '100%', height: '100%', objectFit: 'cover' }} muted />
+                <video src={activeImage} style={{ width: '100%', height: '100%', objectFit: 'cover', zIndex: 1, position: 'relative' }} muted controls />
               ) : (
                 <img 
                   src={activeImage} 
                   alt={property.title} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', zIndex: 1, position: 'relative', imageRendering: 'high-quality' }} 
                   onError={(e) => {
                     if (activeImage.includes('maxresdefault.jpg')) {
                       e.target.src = activeImage.replace('maxresdefault.jpg', 'mqdefault.jpg');
@@ -246,8 +246,14 @@ ${property.price}`
 
           {/* Info Side */}
           <div style={{ padding: 'clamp(1.2rem, 5vw, 2.5rem)', display: 'flex', flexDirection: 'column' }}>
-            <span style={{ color: 'var(--primary)', fontWeight: '600', fontSize: '0.8rem', textTransform: 'uppercase' }}>{property.type}</span>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.2rem)', marginBottom: '0.8rem', lineHeight: '1.2' }}>{property.title}</h2>
+            <span style={{ 
+              background: 'linear-gradient(45deg, #CF9B1A 0%, #F9D976 50%, #CF9B1A 100%)', 
+              color: '#111', fontWeight: '800', fontSize: '0.75rem', textTransform: 'uppercase',
+              padding: '6px 14px', borderRadius: '20px', display: 'inline-block', marginBottom: '1rem',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.4)', alignSelf: 'flex-start',
+              letterSpacing: '0.5px'
+            }}>{property.type}</span>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', marginBottom: '0.8rem', lineHeight: '1.1', textTransform: 'capitalize', fontWeight: '800', letterSpacing: '-0.5px' }}>{property.title}</h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <MapPin size={16} /> {property.location}
             </p>
@@ -271,16 +277,24 @@ ${property.price}`
               <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '0.9rem' }}>{property.description}</p>
             </div>
 
-            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+                marginTop: '10px'
+              }}></div>
+              
               <div style={{ textAlign: 'center' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Valor do Investimento</span>
-                <span style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--primary)' }}>{property.price}</span>
+                <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', display: 'block', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Valor do Investimento</span>
+                <span style={{ fontSize: '2.2rem', fontWeight: '800', color: 'var(--primary)', letterSpacing: '-1px', textShadow: '0 4px 15px rgba(218, 165, 32, 0.2)' }}>{property.price}</span>
               </div>
               <button 
                 onClick={handleWhatsApp}
                 className="btn-primary" 
-                style={{ width: '100%', padding: '1rem', display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
-                <Smartphone size={18} color="white" /> Contatar Corretor
+                style={{ width: '100%', padding: '16px', display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center', fontSize: '1.05rem' }}>
+                <Smartphone size={20} color="#111" /> Falar com Especialista
               </button>
             </div>
           </div>
@@ -299,11 +313,13 @@ ${property.price}`
 };
 
 const metricBoxStyle = {
-  background: 'var(--bg)', 
-  padding: '12px 5px', 
-  borderRadius: '12px', 
-  border: '1px solid var(--glass-border)',
-  textAlign: 'center'
+  background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%)', 
+  padding: '15px 5px', 
+  borderRadius: '16px', 
+  border: '1px solid rgba(255, 255, 255, 0.05)',
+  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+  textAlign: 'center',
+  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.02)'
 };
 
 export default PropertyModal;

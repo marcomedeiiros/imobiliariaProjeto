@@ -51,51 +51,58 @@ const Hero = ({ onSearch }) => {
         </p>
         
         <div className="glass hero-grid" style={{ 
-          maxWidth: '900px', 
+          maxWidth: '1000px', 
           margin: '0 auto', 
-          padding: '2rem', 
-          borderRadius: 'var(--radius)',
+          padding: '2.5rem', 
+          borderRadius: '24px',
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '1.5rem',
-          alignItems: 'end'
+          gap: '1.2rem',
+          alignItems: 'end',
+          boxShadow: '0 25px 50px rgba(0,0,0,0.6)'
         }}>
           <div style={{ textAlign: 'left' }}>
-            <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.5rem', color: 'var(--primary)', fontWeight: '600' }}>LOCALIZAÇÃO</label>
+            <label style={{ display: 'block', fontSize: '0.75rem', marginBottom: '8px', color: 'var(--primary)', fontWeight: '800', letterSpacing: '1px' }}>LOCALIZAÇÃO</label>
             <input 
               type="text" 
               placeholder="Ex: Laranjeiras..." 
               value={filters.location}
               onChange={(e) => setFilters({...filters, location: e.target.value})}
-              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', color: 'white', width: '100%', outline: 'none' }} 
+              style={{ background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '14px 16px', color: 'white', width: '100%', outline: 'none', transition: 'all 0.3s' }} 
+              onFocus={(e) => e.target.style.border = '1px solid var(--primary)'}
+              onBlur={(e) => e.target.style.border = '1px solid rgba(255,255,255,0.08)'}
             />
           </div>
           <div style={{ textAlign: 'left' }}>
-            <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.5rem', color: 'var(--primary)', fontWeight: '600' }}>FINALIDADE</label>
+            <label style={{ display: 'block', fontSize: '0.75rem', marginBottom: '8px', color: 'var(--primary)', fontWeight: '800', letterSpacing: '1px' }}>FINALIDADE</label>
             <select 
               value={filters.type}
               onChange={(e) => setFilters({...filters, type: e.target.value})}
-              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', color: 'white', width: '100%', outline: 'none', cursor: 'pointer' }}>
-              <option style={{ color: 'black' }}>Todos</option>
-              <option style={{ color: 'black' }}>Residencial</option>
-              <option style={{ color: 'black' }}>Industrial</option>
-              <option style={{ color: 'black' }}>Comercial</option>
-              <option style={{ color: 'black' }}>Rural/Lazer</option>
+              style={{ background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '14px 16px', color: 'white', width: '100%', outline: 'none', cursor: 'pointer', transition: 'all 0.3s' }}
+              onFocus={(e) => e.target.style.border = '1px solid var(--primary)'}
+              onBlur={(e) => e.target.style.border = '1px solid rgba(255,255,255,0.08)'}>
+              <option value="Todos" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Todos</option>
+              <option value="Residencial" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Residencial</option>
+              <option value="Industrial" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Industrial</option>
+              <option value="Comercial" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Comercial</option>
+              <option value="Rural/Lazer" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Rural/Lazer</option>
             </select>
           </div>
           <div style={{ textAlign: 'left' }}>
-            <label style={{ display: 'block', fontSize: '0.8rem', marginBottom: '0.5rem', color: 'var(--primary)', fontWeight: '600' }}>VALOR</label>
+            <label style={{ display: 'block', fontSize: '0.75rem', marginBottom: '8px', color: 'var(--primary)', fontWeight: '800', letterSpacing: '1px' }}>VALOR</label>
             <select 
               value={filters.price}
               onChange={(e) => setFilters({...filters, price: e.target.value})}
-              style={{ background: 'transparent', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', color: 'white', width: '100%', outline: 'none', cursor: 'pointer' }}>
-              <option style={{ color: 'black' }}>Todos</option>
-              <option style={{ color: 'black' }}>Até R$ 500k</option>
-              <option style={{ color: 'black' }}>R$ 500k - R$ 1.5M</option>
-              <option style={{ color: 'black' }}>Acima de R$ 1.5M</option>
+              style={{ background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '14px 16px', color: 'white', width: '100%', outline: 'none', cursor: 'pointer', transition: 'all 0.3s' }}
+              onFocus={(e) => e.target.style.border = '1px solid var(--primary)'}
+              onBlur={(e) => e.target.style.border = '1px solid rgba(255,255,255,0.08)'}>
+              <option value="Todos" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Todos</option>
+              <option value="Até R$ 500k" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Até R$ 500k</option>
+              <option value="R$ 500k - R$ 1.5M" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>R$ 500k - R$ 1.5M</option>
+              <option value="Acima de R$ 1.5M" style={{ background: '#0F172A', color: 'white', padding: '10px' }}>Acima de R$ 1.5M</option>
             </select>
           </div>
-          <button className="btn-primary" onClick={handleSearch} style={{ height: '50px' }}>Buscar Terrenos</button>
+          <button className="btn-primary" onClick={handleSearch} style={{ padding: '14px 16px', fontSize: '1.05rem', boxShadow: '0 8px 25px rgba(218, 165, 32, 0.3)' }}>Buscar Terrenos</button>
         </div>
       </div>
     </section>

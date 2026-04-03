@@ -6,7 +6,7 @@ const AddPropertyModal = ({ onAdd, onEdit, editProperty, onClose }) => {
   const [formData, setFormData] = useState({
     title: '',
     price: '',
-    location: 'Serra, ES',
+    location: '',
     type: 'Residencial',
     area: '',
     topology: 'Plano',
@@ -200,11 +200,12 @@ const AddPropertyModal = ({ onAdd, onEdit, editProperty, onClose }) => {
         {/* Mobile Close Button */}
         <button onClick={onClose} style={{
           position: 'absolute', top: '15px', right: '15px', zIndex: 10,
-          background: 'rgba(0,0,0,0.05)', border: 'none', width: '35px', height: '35px',
-          borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}><X size={20} /></button>
+          background: 'rgba(239, 68, 68, 0.15)', border: 'none', width: '35px', height: '35px', color: '#ef4444',
+          borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'all 0.2s'
+        }}><X size={20} color="#ef4444" /></button>
 
-        <h2 style={{ marginBottom: '1.5rem', fontSize: 'clamp(1.4rem, 5vw, 1.8rem)', paddingRight: '40px' }}>
+        <h2 style={{ marginBottom: '2rem', fontSize: 'clamp(1.6rem, 5vw, 2.2rem)', paddingRight: '40px', fontWeight: '800', letterSpacing: '-0.5px' }}>
           {editProperty ? 'Editar Terreno' : 'Novo Terreno'}
         </h2>
 
@@ -373,7 +374,7 @@ const AddPropertyModal = ({ onAdd, onEdit, editProperty, onClose }) => {
             </div>
             <div>
               <label style={labelStyle}>Localização</label>
-              <input name="location" required value={formData.location} onChange={handleChange} style={inputStyle} />
+              <input name="location" required value={formData.location} onChange={handleChange} placeholder="Ex: Serra, ES" style={inputStyle} />
             </div>
           </div>
 
@@ -426,10 +427,10 @@ const AddPropertyModal = ({ onAdd, onEdit, editProperty, onClose }) => {
   );
 };
 
-const labelStyle = { display: 'block', fontSize: '0.8rem', fontWeight: '600', marginBottom: '4px' };
-const inputStyle = { width: '100%', padding: '10px', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.1)', background: 'white', fontSize: '0.9rem' };
-const exploreButtonStyle = { padding: '8px 12px', background: 'var(--primary-low)', color: 'var(--primary)', borderRadius: '10px', cursor: 'pointer', border: '1px dashed var(--primary)' };
-const addButtonStyle = { padding: '0 12px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer', fontSize: '1.1rem' };
-const removeButtonStyle = { position: 'absolute', top: '1px', right: '1px', background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '16px', height: '16px', fontSize: '9px', cursor: 'pointer' };
+const labelStyle = { display: 'block', fontSize: '0.75rem', fontWeight: '600', marginBottom: '6px', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '1px' };
+const inputStyle = { width: '100%', padding: '12px 14px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)', background: 'rgba(0, 0, 0, 0.4)', color: 'white', fontSize: '0.95rem', transition: 'all 0.3s', outline: 'none' };
+const exploreButtonStyle = { padding: '8px 16px', background: 'linear-gradient(135deg, rgba(30, 41, 59, 1), rgba(15, 23, 42, 1))', color: 'var(--primary)', borderRadius: '12px', cursor: 'pointer', border: '1px solid var(--glass-border)', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', transition: 'all 0.3s', display: 'flex', alignItems: 'center' };
+const addButtonStyle = { padding: '0 16px', background: 'linear-gradient(45deg, #CF9B1A 0%, #F9D976 50%, #CF9B1A 100%)', color: '#111', border: 'none', borderRadius: '12px', cursor: 'pointer', fontSize: '1.2rem', boxShadow: '0 4px 10px rgba(218, 165, 32, 0.3)', transition: 'all 0.3s' };
+const removeButtonStyle = { position: 'absolute', top: '4px', right: '4px', background: 'rgba(255, 50, 50, 0.8)', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', fontSize: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' };
 
 export default AddPropertyModal;

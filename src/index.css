@@ -44,8 +44,39 @@
   font-family: 'Outfit', sans-serif;
 }
 
+/* Global Selection */
+::selection {
+  background: rgba(218, 165, 32, 0.4);
+  color: #FFF;
+}
+
+/* Global Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--bg);
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(218, 165, 32, 0.3);
+  border-radius: 10px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(218, 165, 32, 0.03), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(15, 23, 42, 0.6), transparent 50%);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
@@ -58,11 +89,14 @@ input, select, textarea, button {
 
 /* Utilities */
 .glass {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1.5px solid var(--glass-border);
-  box-shadow: var(--shadow);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Default subtle outer border */
+  border-top: 1px solid rgba(255, 255, 255, 0.12); /* Glossy top */
+  border-left: 1px solid rgba(255, 255, 255, 0.08); /* Glossy left */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius);
 }
 
 .card-image-container {
@@ -96,17 +130,25 @@ button {
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: white;
-  padding: 12px 24px;
+  background: linear-gradient(45deg, #CF9B1A 0%, #F9D976 50%, #CF9B1A 100%);
+  background-size: 200% auto;
+  color: #111;
+  padding: 12px 26px;
   border-radius: var(--radius);
-  font-weight: 600;
-  transition: var(--transition);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(var(--primary-h), var(--primary-s), var(--primary-l), 0.3);
+  background-position: right center;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(218, 165, 32, 0.5);
 }
 
 /* Responsive Design */

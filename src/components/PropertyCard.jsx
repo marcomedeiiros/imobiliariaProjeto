@@ -32,11 +32,23 @@ const PropertyCard = ({ property, onOpen, onEdit, onDelete, isAdmin }) => {
         </div>
       )}
 
-      <div className="card-image-container" style={{ height: '220px', position: 'relative', background: '#000' }}>
+      <div className="card-image-container" style={{ 
+        height: '240px', 
+        position: 'relative', 
+        background: '#000',
+        margin: '0', 
+        border: 'none', 
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        borderTopLeftRadius: '24px',
+        borderTopRightRadius: '24px',
+        borderBottomLeftRadius: '0',
+        borderBottomRightRadius: '0',
+        boxShadow: 'none'
+      }}>
         {media.type === 'video-local' ? (
           <video src={media.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} muted />
         ) : (
-          <img src={media.url} alt={property.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={media.url} alt={property.title} style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: '-webkit-optimize-contrast' }} />
         )}
 
         {/* Play Icon Overlay for videos shown as banner */}
@@ -78,17 +90,19 @@ const PropertyCard = ({ property, onOpen, onEdit, onDelete, isAdmin }) => {
         )}
         
         <div style={{ 
-          position: 'absolute', top: '10px', left: '10px', 
-          background: 'var(--primary)', color: 'white', 
-          padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600',
-          zIndex: 5
+          position: 'absolute', top: '15px', left: '15px', 
+          background: 'linear-gradient(45deg, #CF9B1A 0%, #F9D976 50%, #CF9B1A 100%)', 
+          color: '#111', 
+          padding: '4px 14px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '800',
+          zIndex: 5, boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+          textTransform: 'uppercase', letterSpacing: '0.5px'
         }}>
           {property.type || 'Terreno'}
         </div>
       </div>
       
       <div style={{ padding: '1.5rem' }}>
-        <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', fontWeight: '700' }}>{property.title}</h3>
+        <h3 style={{ fontSize: '1.3rem', marginBottom: '0.5rem', fontWeight: '800', textTransform: 'capitalize', letterSpacing: '-0.3px', lineHeight: '1.2' }}>{property.title}</h3>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '5px' }}>
           <MapPin size={14} /> {property.location}
         </p>
@@ -105,12 +119,12 @@ const PropertyCard = ({ property, onOpen, onEdit, onDelete, isAdmin }) => {
           gap: '10px',
           flexWrap: 'wrap'
         }}>
-          <span style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--primary)' }}>
+          <span style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--primary)', letterSpacing: '-0.5px' }}>
             {property?.price && typeof property.price === 'string' && property.price.includes('R$') 
               ? property.price 
               : `R$ ${new Number(property?.price || 0).toLocaleString('pt-BR')}`}
           </span>
-          <button className="btn-primary" onClick={() => onOpen(property)} style={{ padding: '8px 16px', fontSize: '0.85rem', flex: '1 1 auto', textAlign: 'center' }}>
+          <button className="btn-primary" onClick={() => onOpen(property)} style={{ padding: '8px 20px', fontSize: '0.85rem', flex: '1 1 auto', textAlign: 'center', boxShadow: '0 4px 15px rgba(218, 165, 32, 0.2)' }}>
             Ver Detalhes
           </button>
         </div>

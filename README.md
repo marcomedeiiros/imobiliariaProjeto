@@ -59,3 +59,8 @@ Em **outro** terminal, execute:
 npm run dev     # Inicia o o servidor
 ```
 Acesse [http://localhost:5173](http://localhost:5173) no seu navegador.
+
+
+https://github.com/user-attachments/assets/5ad4901e-52b4-4dbd-9c8b-843b1773f164
+
+

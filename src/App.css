@@ -1,0 +1,25 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .hero-section h2 {
+    font-size: 2.5rem !important;
+  }
+  
+  .hero-section .glass {
+    grid-template-columns: 1fr !important;
+    padding: 1.5rem !important;
+  }
+
+  section .container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
